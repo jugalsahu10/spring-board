@@ -1,0 +1,65 @@
+version: '3.8'
+services:
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"   # LocalStack Gateway
+      - "4510-4559:4510-4559"  # LocalStack Ports
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - SERVICES=lambda,ec2,apigateway,rds
+      - PERSISTENCE=/var/lib/localstack/state
+    volumes:
+      - localstack-data:/var/lib/localstack/state
+      - "C:\\Users\\DELL\\Documents\\localstack:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"  # Mount Docker socket
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: test_pass
+    ports:
+      - "3307:3306"  # Map local port 3307 to container port 3306
+    networks:
+      - app-network
+
+  backend-app:
+    build:
+      context: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/demo
+      SPRING_DATASOURCE_USERNAME: test_user
+      SPRING_DATASOURCE_PASSWORD: test_pass
+      AWS_LAMBDA_ENDPOINT: http://localstack:4566
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+      - localstack
+    networks:
+      - app-network
+
+  init-lambda:
+    build:
+      context: . # This should be the root directory where the docker-compose.yml file is located
+      dockerfile: init-lambda/Dockerfile
+    volumes:
+      - ./aws/lambda:/lambda
+    depends_on:
+      - localstack
+    networks:
+      - app-network
+
+volumes:
+  localstack-data:
+
+networks:
+  app-network:
+    driver: bridge
