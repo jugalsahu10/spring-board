@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.adem.spring_board.service;
 
 import com.amazonaws.services.lambda.AWSLambda;
 import com.amazonaws.services.lambda.model.InvokeRequest;

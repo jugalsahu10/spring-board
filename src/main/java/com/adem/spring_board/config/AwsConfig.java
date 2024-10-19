@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.adem.spring_board.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
