@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -36,46 +35,7 @@ public class UserControllerTest {
     @Autowired private PasswordEncoder passwordEncoder;
 
 
-    String SCHEMA = "-- Table structure for table `users`\n" +
-            "DROP TABLE IF EXISTS users;\n" +
-            "\n" +
-            "CREATE TABLE users (\n" +
-            "  id BIGINT NOT NULL AUTO_INCREMENT,\n" +
-            "  email VARCHAR(255) DEFAULT NULL,\n" +
-            "  username VARCHAR(255) DEFAULT NULL,\n" +
-            "  address VARCHAR(255) DEFAULT NULL,\n" +
-            "  name VARCHAR(255) DEFAULT NULL,\n" +
-            "  type TINYINT DEFAULT NULL,\n" +
-            "  password VARCHAR(255) DEFAULT NULL,\n" +
-            "  roles VARCHAR(255) DEFAULT NULL,\n" +
-            "  PRIMARY KEY (id)\n" +
-            ");\n" +
-            "\n" +
-            "-- Table structure for table `product`\n" +
-            "DROP TABLE IF EXISTS product;\n" +
-            "\n" +
-            "CREATE TABLE product (\n" +
-            "  id BIGINT NOT NULL AUTO_INCREMENT,\n" +
-            "  name VARCHAR(255) DEFAULT NULL,\n" +
-            "  price DOUBLE DEFAULT NULL,\n" +
-            "  quantity INT DEFAULT NULL,\n" +
-            "  PRIMARY KEY (id)\n" +
-            ");\n" +
-            "\n" +
-            "-- Table structure for table `orders`\n" +
-            "DROP TABLE IF EXISTS orders;\n" +
-            "\n" +
-            "CREATE TABLE orders (\n" +
-            "  id BIGINT NOT NULL AUTO_INCREMENT,\n" +
-            "  quantity INT NOT NULL,\n" +
-            "  product_id BIGINT DEFAULT NULL,\n" +
-            "  user_id BIGINT DEFAULT NULL,\n" +
-            "  PRIMARY KEY (id),\n" +
-            "  FOREIGN KEY (user_id) REFERENCES users(id),\n" +
-            "  FOREIGN KEY (product_id) REFERENCES product(id)\n" +
-            ");\n" +
-            "\n" +
-            "-- Dumping data for table `users`\n";
+    String SCHEMA = "-- Table structure for table `users`\n" + "DROP TABLE IF EXISTS users;\n" + "\n" + "CREATE TABLE users (\n" + "  id BIGINT NOT NULL AUTO_INCREMENT,\n" + "  email VARCHAR(255) DEFAULT NULL,\n" + "  username VARCHAR(255) DEFAULT NULL,\n" + "  address VARCHAR(255) DEFAULT NULL,\n" + "  name VARCHAR(255) DEFAULT NULL,\n" + "  type TINYINT DEFAULT NULL,\n" + "  password VARCHAR(255) DEFAULT NULL,\n" + "  roles VARCHAR(255) DEFAULT NULL,\n" + "  PRIMARY KEY (id)\n" + ");\n" + "\n" + "-- Table structure for table `product`\n" + "DROP TABLE IF EXISTS product;\n" + "\n" + "CREATE TABLE product (\n" + "  id BIGINT NOT NULL AUTO_INCREMENT,\n" + "  name VARCHAR(255) DEFAULT NULL,\n" + "  price DOUBLE DEFAULT NULL,\n" + "  quantity INT DEFAULT NULL,\n" + "  PRIMARY KEY (id)\n" + ");\n" + "\n" + "-- Table structure for table `orders`\n" + "DROP TABLE IF EXISTS orders;\n" + "\n" + "CREATE TABLE orders (\n" + "  id BIGINT NOT NULL AUTO_INCREMENT,\n" + "  quantity INT NOT NULL,\n" + "  product_id BIGINT DEFAULT NULL,\n" + "  user_id BIGINT DEFAULT NULL,\n" + "  PRIMARY KEY (id),\n" + "  FOREIGN KEY (user_id) REFERENCES users(id),\n" + "  FOREIGN KEY (product_id) REFERENCES product(id)\n" + ");\n" + "\n" + "-- Dumping data for table `users`\n";
 
     @BeforeEach
     void setUp() {
