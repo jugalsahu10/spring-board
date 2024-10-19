@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/orders")
 public class OrderController {
 
     @Autowired private OrderRepository orderRepository;
@@ -25,15 +25,15 @@ public class OrderController {
 
     @Autowired private UserRepository userRepository;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Order> createOrder(@RequestBody Order order, Principal principal) {
         String username = principal.getName();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+//        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
 
-        Product product = productRepository.findById(order.getProduct().getId()).orElseThrow(() -> new RuntimeException("Product not found"));
+//        Product product = productRepository.findById(order.getProduct().getId()).orElseThrow(() -> new RuntimeException("Product not found"));
 
-        order.setUser(user);
-        order.setProduct(product);
+//        order.setUser(user);
+//        order.setProduct(product);
         Order savedOrder = orderRepository.save(order);
 
         return ResponseEntity.ok(savedOrder);

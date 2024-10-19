@@ -38,14 +38,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))  // Disable CSRF protection for API routes
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/**"))  // Disable CSRF protection for API routes
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/products/**").permitAll() // Public APIs
-                        .requestMatchers("/api/orders/**").authenticated() // Secured APIs
+                        .requestMatchers("/orders/**").authenticated()
+                        .anyRequest().permitAll() // Permit all requests for now
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless JWT authentication
                 );
+//        http
+//                .csrf(csrf -> csrf.ignoringRequestMatchers("/**"))  // Disable CSRF protection for API routes
+//                .authorizeHttpRequests(authz -> authz
+//                        .requestMatchers("/users/**").permitAll() // Public APIs
+//                        .requestMatchers("/products/**").permitAll() // Public APIs
+//                        .requestMatchers("/orders/**").authenticated() // Secured APIs
+//                )
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless JWT authentication
+//                );
 
         // Add JWT Filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
